@@ -1,33 +1,27 @@
 pipeline {
     agent any
-
+	triggers { pollSCM '* * * * *' }
     stages {
-        
-        triggers{
-        	pollSCM '* * * * *'
-        }
-        
         stage('Build') {
             steps {
                 // Run Maven on a Unix agent.
                 sh "./mvnw clean package"
             }
         }
-        
-        post {
-            // If Maven was able to run the tests, even if some of the test
-            // failed, record the test results and archive the jar file.
-            always {
-                junit 'target/surefire-reports/*.xml'
-                emailext attachLog: true, compressLog: true,
-                    to: 'test@test',
-                    recipientProviders: [buildUser(), upstreamDevelopers()],
-                    subject: "Job \'${JOB_NAME}\' (${BUILD_NUMBER}) is ${currentBuild.result}",
-                    body: "Please go to ${BUILD_URL} and verify the build"
-            }
-            success {
-                archiveArtifacts 'target/*.jar'
-            }
+    }
+    post {
+        // If Maven was able to run the tests, even if some of the test
+        // failed, record the test results and archive the jar file.
+        always {
+            junit 'target/surefire-reports/*.xml'
+            emailext attachLog: true, compressLog: true,
+                to: 'test@test',
+                recipientProviders: [buildUser(), upstreamDevelopers()],
+                subject: "Job \'${JOB_NAME}\' (${BUILD_NUMBER}) is ${currentBuild.result}",
+                body: "Please go to ${BUILD_URL} and verify the build"
+        }
+        success {
+            archiveArtifacts 'target/*.jar'
         }
     }
 }
