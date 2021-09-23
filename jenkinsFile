@@ -7,7 +7,7 @@ pipeline {
                 echo "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
                 echo "Workspace : $WORKSPACE"
                 sh 'ls -l "$WORKSPACE"'
-                --sh 'docker version'
+                //sh 'docker version'
             }
         }
         stage('Build & Test') {
@@ -30,13 +30,13 @@ pipeline {
                 echo 'Error- SonarCube have not been configured yet'
             }
         }
-        --stage('Push') {
-        --    steps {
-        --       withCredentials([usernamePassword(credentialsId: 'dockerHub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {                      
-        --            sh 'chmod +x ./ci/docker_script_push.sh && ./ci/docker_script_push.sh'
-        --        }
-        --    }
-        --}
+        //stage('Push') {
+        //    steps {
+        //       withCredentials([usernamePassword(credentialsId: 'dockerHub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {                      
+        //            sh 'chmod +x ./ci/docker_script_push.sh && ./ci/docker_script_push.sh'
+        //        }
+        //    }
+        //}
     }
     post {
     	emailext attachLog: true, compressLog: true, to: 'test@test', recipientProviders: [buildUser(), upstreamDevelopers()],
