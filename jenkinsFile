@@ -39,9 +39,10 @@ pipeline {
         //}
     }
     post {
-    	emailext attachLog: true, compressLog: true, to: 'test@test', recipientProviders: [buildUser(), upstreamDevelopers()],
-    		subject: "Job \'${JOB_NAME}\' (${BUILD_NUMBER}) is ${currentBuild.result}",
-    		body: "Please go to ${BUILD_URL} and verify the build"
-    	echo 'Build Completed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)'
+	    always {
+	    	emailext attachLog: true, compressLog: true, to: 'test@test', recipientProviders: [buildUser(), upstreamDevelopers()], 
+	    		subject: "Job \'${JOB_NAME}\' (${BUILD_NUMBER}) is ${currentBuild.result}", body: "Please go to ${BUILD_URL} and verify the build"
+    		echo 'Build Completed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)'
+	    }
     }
 }
