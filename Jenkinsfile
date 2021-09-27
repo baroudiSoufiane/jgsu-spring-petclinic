@@ -1,3 +1,5 @@
+def dockerImage
+
 pipeline {
     agent any
 	triggers { pollSCM 'H * * * *' }
@@ -7,7 +9,6 @@ pipeline {
                 echo "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}>)"
                 echo "Workspace : $WORKSPACE"
                 sh 'ls -l "$WORKSPACE"'
-                sh 'docker version'
             }
         }
         stage('Build & Test') {
@@ -31,11 +32,12 @@ pipeline {
             }
         }
         stage('Push') {
-            steps {
-               withCredentials([usernamePassword(credentialsId: 'dockerHub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {                      
-                    sh 'chmod +x ./ci/docker_script_push.sh && ./ci/docker_script_push.sh'
-                }
-            }
+        	steps {
+	        	dockerImage = docker.build('sobaroud/petclinic:v$BUILD_NUMBER','')
+	        	docker.withRegistry('','dockerHub'){
+	        		dockerImage.push()
+	        	}
+        	}
         }
     }
     post {
