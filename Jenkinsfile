@@ -33,10 +33,12 @@ pipeline {
         }
         stage('Push') {
         	steps {
-	        	dockerImage = docker.build('sobaroud/petclinic:v$BUILD_NUMBER','')
-	        	docker.withRegistry('','dockerHub'){
-	        		dockerImage.push()
-	        	}
+        		script {
+        			dockerImage = docker.build('sobaroud/petclinic:v$BUILD_NUMBER','');
+        			docker.withRegistry('','dockerHub'){
+	        			dockerImage.push();
+	        		}
+        		}
         	}
         }
     }
