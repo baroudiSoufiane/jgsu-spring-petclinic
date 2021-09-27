@@ -35,7 +35,7 @@ pipeline {
         stage('Push') {
         	steps {
         		script {
-        			dockerImage = docker.build('sobaroud/petclinic:v$BUILD_NUMBER','');
+        			dockerImage = docker.build('sobaroud/petclinic:v$BUILD_NUMBER','./');
         			docker.withRegistry('','dockerHub'){
 	        			dockerImage.push();
 	        		}
