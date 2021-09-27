@@ -1,13 +1,14 @@
 def dockerImage
 
 pipeline {
-    agent any
+    agent {label 'agent-docker'}
 	triggers { pollSCM 'H * * * *' }
     stages {
     	stage('Verify') {
             steps {
                 echo "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}>)"
                 echo "Workspace : $WORKSPACE"
+                sh 'docker --version'
                 sh 'ls -l "$WORKSPACE"'
             }
         }
