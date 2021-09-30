@@ -1,21 +1,24 @@
 def dockerImage
 
 pipeline {
-    agent {label 'agent-docker'}
-	triggers { pollSCM 'H * * * *' }
+    //agent {label 'agent-docker'}
+    agent any
     stages {
-    	stage('Verify') {
+    	stage
+    	stage('CSM & Verify') {
             steps {
-                echo "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}>)"
+            	// git branch : ${branch}, url : ${}
+            	echo "URL : ${url} OR param.branch : ${params.url}"
+            	echo "Branch : ${branch} OR param.branch : ${params.branch}"
+            	echo "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (${env.BUILD_URL})"
                 echo "Workspace : $WORKSPACE"
-                sh 'docker --version'
                 sh 'ls -l "$WORKSPACE"'
             }
         }
         stage('Build & Test') {
             steps {
                 // Run Maven on a Unix agent.
-                sh "./mvnw clean install"
+                sh "./mvnw clean build"
             }
             post {
             	// If Maven was able to run the tests, even if some of the test failed, record the test results and archive the jar file.
@@ -32,6 +35,7 @@ pipeline {
                 echo 'Error- SonarCube have not been configured yet'
             }
         }
+        /**
         stage('Push') {
         	steps {
         		script {
@@ -42,6 +46,7 @@ pipeline {
         		}
         	}
         }
+        */
     }
     post {
 	    always {
