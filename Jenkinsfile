@@ -3,12 +3,16 @@ def dockerImage
 pipeline {
     //agent {label 'agent-docker'}
     agent any
+    parameters {
+		string(name: 'GIT_BRANCH', defaultValue: 'main')
+	}
+	environment {
+		GIT_URL = 'http://gitlab.apps.web.bpifrance.fr/DPSM/FRS/CET/ctc.git'
+	}
     stages {
     	stage('CSM & Verify') {
             steps {
-            	// git branch : ${branch}, url : ${}
-            	echo "URL : ${url} OR param.branch : ${params.url}"
-            	echo "Branch : ${branch} OR param.branch : ${params.branch}"
+            	git branch : ${GIT_BRANCH}, url : ${GIT_URL}
             	echo "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (${env.BUILD_URL})"
                 echo "Workspace : $WORKSPACE"
                 sh 'ls -l "$WORKSPACE"'
