@@ -4,7 +4,6 @@ pipeline {
     //agent {label 'agent-docker'}
     agent any
     stages {
-    	stage
     	stage('CSM & Verify') {
             steps {
             	// git branch : ${branch}, url : ${}
