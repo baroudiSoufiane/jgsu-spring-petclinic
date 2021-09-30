@@ -7,7 +7,7 @@ pipeline {
 		string(name: 'GIT_BRANCH', defaultValue: 'main')
 	}
 	environment {
-		GIT_URL = 'http://gitlab.apps.web.bpifrance.fr/DPSM/FRS/CET/ctc.git'
+		GIT_URL = 'https://github.com/baroudiSoufiane/jgsu-spring-petclinic.git'
 	}
     stages {
     	stage('CSM & Verify') {
