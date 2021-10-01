@@ -16,6 +16,10 @@ pipeline {
             	echo "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (${env.BUILD_URL})"
                 echo "Workspace : $WORKSPACE"
                 sh 'ls -l "$WORKSPACE"'
+                script{
+                    releasenotes()
+                }
+
             }
         }
         stage('Build & Test') {
