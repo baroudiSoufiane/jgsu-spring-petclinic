@@ -12,7 +12,7 @@ pipeline {
     stages {
     	stage('CSM & Verify') {
             steps {
-            	//git branch : "${GIT_BRANCH}", url : "${GIT_URL}"
+            	git branch : "${GIT_BRANCH}", url : "${GIT_URL}"
             	echo "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (${env.BUILD_URL})"
                 echo "Workspace : $WORKSPACE"
                 sh 'ls -l "$WORKSPACE"'
