@@ -16,7 +16,7 @@ pipeline {
             	echo "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (${env.BUILD_URL})"
                 echo "Workspace : $WORKSPACE"
                 sh 'ls -l "$WORKSPACE"'
-                script{
+                script {
                     releasenotes()
                 }
 
@@ -25,7 +25,7 @@ pipeline {
         stage('Build & Test') {
             steps {
                 // Run Maven on a Unix agent.
-                sh "./mvnw clean build"
+                sh "./mvnw clean package"
             }
             post {
             	// If Maven was able to run the tests, even if some of the test failed, record the test results and archive the jar file.
